@@ -8,19 +8,19 @@
 bitloop:             ; bitloop outputs 24 bits for one LED (PIXEL)
     out x, 1
     jmp !x do_zero
-do_one:              ; Output a "1" to LED
-    set pins, 1 [4]
+do_one:              ; Output a "1" to LED (inverted for level converter)
+    set pins, 0 [4]
     jmp cont
-do_zero:             ; Output a "0" to LED
-    set pins, 1 [2] 
-    set pins, 0 [2]
+do_zero:             ; Output a "0" to LED (inverted for level converter)
+    set pins, 0 [2] 
+    set pins, 1 [2]
 cont:
-    set pins, 0
+    set pins, 1
     jmp y-- bitloop
 
     set y, 20        ; NUM_PIXELS complete; do a "reset" of just over (y+1)*4 uSec
 do_reset:
-    set pins, 0 [30]
+    set pins, 1 [30] ; "0" but inverted for level converter
     jmp y-- do_reset
 .wrap
 
