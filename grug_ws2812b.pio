@@ -2,8 +2,13 @@
 
 .program grug_ws2812b
 
+    set y, 31        ; Level converter inverts so start with a reset, i.e.
+init_reset:          ; drive high (inverted to low) for a long time
+    set pins, 1 [30] 
+    jmp y-- init_reset
+
 .wrap_target
-    out y, 24        ; Read NUM_PIXELS - 1 from ARM core
+    out y, 24        ; Read NUM_PIXELS*24 - 1 from ARM core
 
 bitloop:             ; bitloop outputs 24 bits for one LED (PIXEL)
     out x, 1
@@ -18,7 +23,7 @@ cont:
     set pins, 1
     jmp y-- bitloop
 
-    set y, 20        ; NUM_PIXELS complete; do a "reset" of just over (y+1)*4 uSec
+    set y, 20        ; NUM_PIXELS*24 bits complete; do a "reset" of just over (y+1)*4 uSec
 do_reset:
     set pins, 1 [30] ; "0" but inverted for level converter
     jmp y-- do_reset

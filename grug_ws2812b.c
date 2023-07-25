@@ -114,7 +114,7 @@ bool timer_callback(struct repeating_timer *t)
   } *u;
 
   u = t->user_data;    
-  dma_channel_set_read_addr(u->dma_chan, u->data, true);
+  dma_channel_set_read_addr(u->dma_chan, u->data, true); // Start the DMA to the PIO FIFO
 
   return true; // Continue repeating timer
 }  
